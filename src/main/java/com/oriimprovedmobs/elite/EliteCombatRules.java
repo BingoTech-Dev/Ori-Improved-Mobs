@@ -10,4 +10,22 @@ public final class EliteCombatRules {
                 types.contains(EliteType.FROSTBORN),
                 types.contains(EliteType.INFERNAL));
     }
+
+    public static float attackDamageBonus(
+            Set<EliteType> types,
+            boolean meleeAttack,
+            float targetHealth,
+            float targetMaxHealth,
+            boolean targetOnFire) {
+        float bonus = 0.0F;
+        if (meleeAttack
+                && types.contains(EliteType.NIGHT_STALKER)
+                && targetHealth < targetMaxHealth * 0.5F) {
+            bonus += 0.15F;
+        }
+        if (types.contains(EliteType.INFERNAL) && targetOnFire) {
+            bonus += 0.15F;
+        }
+        return bonus;
+    }
 }
