@@ -28,4 +28,8 @@ public final class EliteCombatRules {
         }
         return bonus;
     }
+
+    public static boolean shouldFrostbornRetaliate(Set<EliteType> defenderTypes, boolean meleeHit) {
+        return meleeHit && defenderTypes.contains(EliteType.FROSTBORN);
+    }
 }

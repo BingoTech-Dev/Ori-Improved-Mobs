@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EliteCombatRulesTest {
     @Test
@@ -59,5 +61,15 @@ class EliteCombatRulesTest {
 
         assertEquals(0.30F,
                 EliteCombatRules.attackDamageBonus(types, true, 9.0F, 20.0F, true), 0.0001F);
+    }
+
+    @Test
+    void frostbornRetaliationRequiresFrostbornAndMeleeHit() {
+        assertTrue(EliteCombatRules.shouldFrostbornRetaliate(
+                EnumSet.of(EliteType.FROSTBORN), true));
+        assertFalse(EliteCombatRules.shouldFrostbornRetaliate(
+                EnumSet.of(EliteType.FROSTBORN), false));
+        assertFalse(EliteCombatRules.shouldFrostbornRetaliate(
+                EnumSet.noneOf(EliteType.class), true));
     }
 }
