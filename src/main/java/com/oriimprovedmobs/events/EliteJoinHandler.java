@@ -1,5 +1,6 @@
 package com.oriimprovedmobs.events;
 
+import com.oriimprovedmobs.elite.EliteBlockBreakingRules;
 import com.oriimprovedmobs.elite.EliteData;
 import com.oriimprovedmobs.elite.ElitePresentation;
 import com.oriimprovedmobs.elite.EliteType;
@@ -41,6 +42,13 @@ public final class EliteJoinHandler {
         }
         if (types.contains(EliteType.INFERNAL)) {
             addEffectIfMissing(mob, MobEffects.FIRE_RESISTANCE);
+        }
+
+        boolean blockBreakingGoalInstalled = mob.goalSelector.getAvailableGoals().stream()
+                .anyMatch(wrappedGoal -> wrappedGoal.getGoal() instanceof EliteBlockBreakingGoal);
+        if (EliteBlockBreakingRules.shouldInstallGoal(
+                types.contains(EliteType.BREACHER), blockBreakingGoalInstalled)) {
+            mob.goalSelector.addGoal(1, new EliteBlockBreakingGoal(mob));
         }
     }
 
