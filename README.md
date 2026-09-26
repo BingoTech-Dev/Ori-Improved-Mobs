@@ -1,4 +1,4 @@
-# Ori Improved Mobs — Forge 开发环境
+# Ori Improved Mobs — 怪物增强模组
 
 ## 环境版本
 
@@ -32,4 +32,35 @@ $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 - mod id：`ori_improved_mobs`
 - 入口类：`src/main/java/com/oriimprovedmobs/OriImprovedMobs.java`
 
-当前是干净的 Forge mod 起始骨架，尚未实现具体生物行为。
+## 精英怪
+
+模组为原版自然生成的敌对生物提供三种可叠加的精英词缀。每只符合条件的怪物只进行一次总概率判定，默认概率为 5%；凋灵、末影龙等 Boss、非自然生成实体和其他模组添加的怪物不参与。雪地夜晚可能同时获得夜行者与霜裔。
+
+| 词缀 | 生成环境 | 能力 |
+| --- | --- | --- |
+| 夜行者 | 主世界夜晚 | 速度 I |
+| 霜裔 | Forge `is_snowy` 群系标签 | 命中时使目标缓慢 I，持续 2 秒 |
+| 狱火 | 下界 | 火焰抗性；命中非火焰免疫目标时点燃 2 秒 |
+
+精英怪使用原版发光效果和名称前缀识别。词缀会随实体保存；配置变更只影响之后生成的怪物。首版不添加专属掉落、新实体、模型或运行时依赖。支持单人游戏与专用服务器，能力由服务器结算。
+
+## 服务器配置
+
+配置位于各世界的 `serverconfig/ori_improved_mobs-server.toml`：
+
+```toml
+[elites]
+enabled = true
+spawnChance = 0.05
+nightStalkerEnabled = true
+frostbornEnabled = true
+infernalEnabled = true
+```
+
+`spawnChance` 范围是 `0.0` 到 `1.0`。全局开关、总生成概率和三个词缀开关均由服务器配置控制。
+
+## 测试
+
+```powershell
+.\gradlew.bat test
+```
