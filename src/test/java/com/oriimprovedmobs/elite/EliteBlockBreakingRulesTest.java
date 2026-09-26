@@ -27,4 +27,22 @@ class EliteBlockBreakingRulesTest {
         assertFalse(EliteBlockBreakingRules.cooldownReady(9L, 10L));
         assertTrue(EliteBlockBreakingRules.cooldownReady(10L, 10L));
     }
+
+    @Test
+    void startsOnlyForBreacherWithLivePlayerBlockedPathAndReadyCooldown() {
+        assertTrue(EliteBlockBreakingRules.shouldStartGoal(true, true, true, true, true, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(false, true, true, true, true, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(true, false, true, true, true, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(true, true, false, true, true, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(true, true, true, false, true, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(true, true, true, true, false, 10L, 10L));
+        assertFalse(EliteBlockBreakingRules.shouldStartGoal(true, true, true, true, true, 9L, 10L));
+    }
+
+    @Test
+    void installsGoalOnlyOnceAndOnlyForBreacher() {
+        assertTrue(EliteBlockBreakingRules.shouldInstallGoal(true, false));
+        assertFalse(EliteBlockBreakingRules.shouldInstallGoal(true, true));
+        assertFalse(EliteBlockBreakingRules.shouldInstallGoal(false, false));
+    }
 }

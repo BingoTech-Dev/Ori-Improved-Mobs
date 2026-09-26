@@ -23,4 +23,24 @@ public final class EliteBlockBreakingRules {
     public static boolean cooldownReady(long gameTime, long nextBreakGameTime) {
         return gameTime >= nextBreakGameTime;
     }
+
+    public static boolean shouldStartGoal(
+            boolean hasBreacher,
+            boolean hasPlayerTarget,
+            boolean targetAlive,
+            boolean pathIncomplete,
+            boolean hasBreakableBlockHit,
+            long gameTime,
+            long nextBreakGameTime) {
+        return hasBreacher
+                && hasPlayerTarget
+                && targetAlive
+                && pathIncomplete
+                && hasBreakableBlockHit
+                && cooldownReady(gameTime, nextBreakGameTime);
+    }
+
+    public static boolean shouldInstallGoal(boolean hasBreacher, boolean alreadyInstalled) {
+        return hasBreacher && !alreadyInstalled;
+    }
 }
