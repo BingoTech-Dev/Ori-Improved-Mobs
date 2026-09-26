@@ -17,6 +17,9 @@ public final class EliteTypeResolver {
         if (context.nether() && enabled.contains(EliteType.INFERNAL)) {
             result.add(EliteType.INFERNAL);
         }
+        if (enabled.contains(EliteType.BREACHER)) {
+            result.add(EliteType.BREACHER);
+        }
         return result;
     }
 }

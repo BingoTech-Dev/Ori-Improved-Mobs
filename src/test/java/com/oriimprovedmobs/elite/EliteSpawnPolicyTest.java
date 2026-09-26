@@ -22,7 +22,7 @@ class EliteSpawnPolicyTest {
                 () -> 0.049D,
                 0.05D);
 
-        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER), result);
+        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.BREACHER), result);
     }
 
     @Test
@@ -54,7 +54,7 @@ class EliteSpawnPolicyTest {
         var rolls = new AtomicInteger();
 
         var result = EliteSpawnPolicy.select(
-                true, true, false, false, true, context, EnumSet.allOf(EliteType.class),
+                true, true, false, false, true, context, legacyTypes(),
                 () -> {
                     rolls.incrementAndGet();
                     return 0.0D;
@@ -78,8 +78,12 @@ class EliteSpawnPolicyTest {
                 },
                 0.05D);
 
-        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN), result);
+        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN, EliteType.BREACHER), result);
         assertEquals(1, rolls.get());
+    }
+
+    private static EnumSet<EliteType> legacyTypes() {
+        return EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN, EliteType.INFERNAL);
     }
 
     private static EnumSet<EliteType> select(
