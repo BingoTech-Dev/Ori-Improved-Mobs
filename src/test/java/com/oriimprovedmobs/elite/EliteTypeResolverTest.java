@@ -33,4 +33,18 @@ class EliteTypeResolverTest {
         assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN),
                 EliteTypeResolver.resolve(context, EnumSet.allOf(EliteType.class)));
     }
+
+    @Test
+    void respectsDisabledEliteTypesIndependently() {
+        var context = new EliteSpawnContext(true, false, true, true);
+        assertEquals(EnumSet.of(EliteType.FROSTBORN),
+                EliteTypeResolver.resolve(context, EnumSet.of(EliteType.FROSTBORN)));
+    }
+
+    @Test
+    void returnsEmptyWhenNoEnvironmentMatches() {
+        var context = new EliteSpawnContext(true, false, false, false);
+        assertEquals(EnumSet.noneOf(EliteType.class),
+                EliteTypeResolver.resolve(context, EnumSet.allOf(EliteType.class)));
+    }
 }

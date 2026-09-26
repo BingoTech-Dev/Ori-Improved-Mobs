@@ -32,4 +32,10 @@ class EliteConfigDefaultsTest {
 
         assertEquals(EnumSet.allOf(EliteType.class), EliteConfig.enabledTypes(true, true, true));
     }
+
+    @Test
+    void enabledTypesHonorEachPerTypeSwitch() {
+        assertEquals(EnumSet.of(EliteType.FROSTBORN), EliteConfig.enabledTypes(false, true, false));
+        assertEquals(EnumSet.noneOf(EliteType.class), EliteConfig.enabledTypes(false, false, false));
+    }
 }
