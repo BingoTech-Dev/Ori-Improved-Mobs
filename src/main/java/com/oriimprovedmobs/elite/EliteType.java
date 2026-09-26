@@ -6,7 +6,8 @@ import java.util.Optional;
 public enum EliteType {
     NIGHT_STALKER("night_stalker"),
     FROSTBORN("frostborn"),
-    INFERNAL("infernal");
+    INFERNAL("infernal"),
+    BREACHER("breacher");
 
     private final String id;
 

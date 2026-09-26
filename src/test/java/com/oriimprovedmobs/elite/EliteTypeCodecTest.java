@@ -16,6 +16,18 @@ class EliteTypeCodecTest {
     }
 
     @Test
+    void roundTripsBreacherType() {
+        var expected = EnumSet.of(EliteType.BREACHER);
+
+        assertEquals(expected, EliteTypeCodec.read(EliteTypeCodec.write(expected)));
+    }
+
+    @Test
+    void storesBreacherUsingStableId() {
+        assertEquals("breacher", EliteType.BREACHER.id());
+    }
+
+    @Test
     void readsEmptyTypeList() {
         assertEquals(EnumSet.noneOf(EliteType.class), EliteTypeCodec.read(new ListTag()));
     }

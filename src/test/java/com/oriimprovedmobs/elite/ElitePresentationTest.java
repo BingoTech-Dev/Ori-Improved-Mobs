@@ -21,4 +21,10 @@ class ElitePresentationTest {
     void emptyEliteSetHasNoLabelKeys() {
         assertEquals(List.of(), ElitePresentation.labelKeys(Set.of()));
     }
+
+    @Test
+    void exposesBreacherLabelKey() {
+        assertEquals(List.of("entity.ori_improved_mobs.elite.breacher"),
+                ElitePresentation.labelKeys(Set.of(EliteType.BREACHER)));
+    }
 }
