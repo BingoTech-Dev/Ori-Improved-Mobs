@@ -1,6 +1,7 @@
 package com.oriimprovedmobs;
 
 import com.oriimprovedmobs.config.EliteConfig;
+import com.oriimprovedmobs.events.EliteCombatHandler;
 import com.oriimprovedmobs.events.EliteJoinHandler;
 import com.oriimprovedmobs.events.EliteSpawnHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,5 +17,6 @@ public final class OriImprovedMobs {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, EliteConfig.SPEC);
         MinecraftForge.EVENT_BUS.register(new EliteSpawnHandler());
         MinecraftForge.EVENT_BUS.register(new EliteJoinHandler());
+        MinecraftForge.EVENT_BUS.register(new EliteCombatHandler());
     }
 }
