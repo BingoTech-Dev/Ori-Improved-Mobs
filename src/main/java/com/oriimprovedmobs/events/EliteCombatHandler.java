@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -60,6 +61,22 @@ public final class EliteCombatHandler {
         }
         if (effects.igniteTarget() && !target.fireImmune()) {
             target.setSecondsOnFire(2);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingDamage(LivingDamageEvent event) {
+        if (event.getAmount() <= 0.0F || event.getEntity().level().isClientSide) {
+            return;
+        }
+        Entity causingEntity = event.getSource().getEntity();
+        if (!(causingEntity instanceof Mob attacker) || attacker == event.getEntity()) {
+            return;
+        }
+        EnumSet<EliteType> types = EliteData.read(attacker);
+        float healAmount = EliteCombatRules.lifestealHeal(types, event.getAmount());
+        if (healAmount > 0.0F) {
+            attacker.heal(healAmount);
         }
     }
 

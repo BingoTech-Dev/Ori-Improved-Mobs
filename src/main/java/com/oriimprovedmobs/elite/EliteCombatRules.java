@@ -3,7 +3,16 @@ package com.oriimprovedmobs.elite;
 import java.util.Set;
 
 public final class EliteCombatRules {
+    public static final float LIFESTEAL_RATIO = 0.5F;
+
     private EliteCombatRules() {}
+
+    public static float lifestealHeal(Set<EliteType> types, float actualDamage) {
+        if (!types.contains(EliteType.VAMPIRIC) || actualDamage <= 0.0F) {
+            return 0.0F;
+        }
+        return actualDamage * LIFESTEAL_RATIO;
+    }
 
     public static EliteHitEffects onHit(Set<EliteType> types) {
         return new EliteHitEffects(
