@@ -3,5 +3,8 @@
   "entity.ori_improved_mobs.elite.night_stalker": "Night Stalker",
   "entity.ori_improved_mobs.elite.frostborn": "Frostborn",
   "entity.ori_improved_mobs.elite.infernal": "Infernal",
-  "entity.ori_improved_mobs.elite.breacher": "Breacher"
+  "entity.ori_improved_mobs.elite.breacher": "Breacher",
+  "entity.ori_improved_mobs.elite.shrouded": "Shrouded",
+  "entity.ori_improved_mobs.elite.vampiric": "Vampiric",
+  "entity.ori_improved_mobs.elite.pathfinder": "Pathfinder"
 }

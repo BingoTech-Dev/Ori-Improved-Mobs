@@ -4,7 +4,7 @@
 
 ## 项目概览
 
-- Minecraft Forge 模组，为原版自然生成的敌对怪物添加可叠加的**精英词缀**（夜行者 / 霜裔 / 狱火 / 破障者）。
+- Minecraft Forge 模组，为原版自然生成的敌对怪物添加可叠加的**精英词缀**（夜行者 / 霜裔 / 狱火 / 破障者 / 隐身 / 吸血 / 开拓者）。
 - 版本：Minecraft 1.20.1、Forge 47.4.23、Java 17；Gradle 8.8 由项目自带 Wrapper 提供（`gradle/wrapper/`），不要单独安装或升级 Gradle。
 - mod id：`ori_improved_mobs`；包名：`com.oriimprovedmobs`。两者与 `@Mod` 常量、`gradle.properties` 必须保持一致。
 - 设计基线：不新增实体/物品/模型，无运行时依赖，只修改原版实体行为；支持单人 + 专用服务器，能力由服务器结算。
@@ -34,13 +34,13 @@ JDK 17 的实际目录名可在 `C:\Program Files\Eclipse Adoptium\`（bash 下�
 
 | 目的 | 命令 | 说明 |
 | --- | --- | --- |
-| 跑单元测试 | `./gradlew.bat test` | 当前基线：10 个测试类 / 41 个测试全绿 |
+| 跑单元测试 | `./gradlew.bat test` | 当前基线：12 个测试类 / 60 个测试全绿 |
 | 提交前完整验证 | `./gradlew.bat clean test build` | 最终交付门禁 |
 | 生成 IDE 运行配置 | `./gradlew.bat genIntellijRuns` | 按需 |
 | 启动客户端 | `./gradlew.bat runClient` | 仅当需要运行时验证；会真正打开游戏进程 |
 
 - `gradle.properties` 设置了 `org.gradle.daemon=false`，每次调用都会 fork 一次性守护进程，构建偏慢属正常，不要为了"提速"改动它。
-- 产物：`build/libs/ori_improved_mobs-0.1.0.jar`（`jar` 任务自动接 `reobfJar` 重混淆）。
+- 产物：`build/libs/ori_improved_mobs-0.2.0.jar`（`jar` 任务自动接 `reobfJar` 重混淆）。
 - 不要升级 Gradle / Forge / Java 目标版本，除非用户明确要求——ForgeGradle 对版本组合很敏感。
 - 编译通过 ≠ 运行时正确。涉及 Forge 事件/世界交互的改动，单元测试不能证明事件边界行为；需要运行时验证时用 `runClient` / `runServer`，并在交付说明中如实写明是否真的做过运行时验证。
 
@@ -50,7 +50,7 @@ JDK 17 的实际目录名可在 `C:\Program Files\Eclipse Adoptium\`（bash 下�
 
 ```text
 src/main/java/com/oriimprovedmobs/
-├── OriImprovedMobs.java            @Mod 入口：注册 SERVER 配置与 3 个事件处理器
+├── OriImprovedMobs.java            @Mod 入口：注册 SERVER 配置与 4 个事件处理器
 ├── config/
 │   ├── EliteConfig.java            ForgeConfigSpec（enabled、spawnChance、每词缀开关）+ enabledTypes()
 │   └── EliteConfigDefaults.java    纯 Java 默认值常量（供单测断言）
@@ -63,14 +63,18 @@ src/main/java/com/oriimprovedmobs/
 │   ├── EliteHitEffects.java        命中效果 record(slowTarget, igniteTarget)
 │   ├── EliteCooldowns.java         霜裔反击冷却（NBT + gameTime）
 │   ├── EliteBlockBreakingRules.java 破障者：硬度上限、冷却、Goal 安装条件
+│   ├── EliteConcealmentRules.java  隐身：50% 血量阈值的显隐判定
+│   ├── EliteClimbingRules.java     开拓者：攀爬/建造条件、16 格范围、10 tick 间隔
 │   ├── EliteData.java              实体 NBT 读写（键 `ori_improved_mobs:elite_types`）
 │   ├── EliteTypeCodec.java         EnumSet ↔ ListTag（字符串 id）
 │   └── ElitePresentation.java      名称前缀展示
 └── events/                         Forge 事件薄适配器
     ├── EliteSpawnHandler.java      MobSpawnEvent.FinalizeSpawn：精英化判定
-    ├── EliteJoinHandler.java       EntityJoinLevelEvent：发光/名称/永久增益/破障者 Goal 安装
-    ├── EliteCombatHandler.java     LivingHurtEvent：战斗词缀效果
-    └── EliteBlockBreakingGoal.java 破障者拆方块 Goal（尊重 mobGriefing 与 ForgeHooks.canEntityDestroy）
+    ├── EliteJoinHandler.java       EntityJoinLevelEvent：发光/名称/永久增益/破障者与开拓者 Goal 安装
+    ├── EliteCombatHandler.java     LivingHurtEvent / LivingDamageEvent：战斗词缀效果（含吸血）
+    ├── EliteConcealmentHandler.java LivingDamageEvent / LivingHealEvent：隐身显隐刷新
+    ├── EliteBlockBreakingGoal.java 破障者拆方块 Goal（尊重 mobGriefing 与 ForgeHooks.canEntityDestroy）
+    └── EliteClimbingGoal.java      开拓者建造（梯子/脚手架）+ 主动攀爬 Goal（尊重 mobGriefing 与 Forge 事件）
 ```
 
 必须遵守的设计约束：

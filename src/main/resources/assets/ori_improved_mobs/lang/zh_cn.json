@@ -3,5 +3,8 @@
   "entity.ori_improved_mobs.elite.night_stalker": "夜行者",
   "entity.ori_improved_mobs.elite.frostborn": "霜裔",
   "entity.ori_improved_mobs.elite.infernal": "狱火",
-  "entity.ori_improved_mobs.elite.breacher": "破障者"
+  "entity.ori_improved_mobs.elite.breacher": "破障者",
+  "entity.ori_improved_mobs.elite.shrouded": "隐身",
+  "entity.ori_improved_mobs.elite.vampiric": "吸血",
+  "entity.ori_improved_mobs.elite.pathfinder": "开拓者"
 }
