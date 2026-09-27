@@ -72,4 +72,18 @@ class EliteCombatRulesTest {
         assertFalse(EliteCombatRules.shouldFrostbornRetaliate(
                 EnumSet.noneOf(EliteType.class), true));
     }
+
+    @Test
+    void vampiricElitesHealHalfOfTheDamageTheyDeal() {
+        assertEquals(2.0F,
+                EliteCombatRules.lifestealHeal(EnumSet.of(EliteType.VAMPIRIC), 4.0F), 0.0001F);
+    }
+
+    @Test
+    void lifestealIsZeroWithoutVampiricOrWithoutDamage() {
+        assertEquals(0.0F,
+                EliteCombatRules.lifestealHeal(EnumSet.of(EliteType.FROSTBORN), 4.0F), 0.0001F);
+        assertEquals(0.0F,
+                EliteCombatRules.lifestealHeal(EnumSet.of(EliteType.VAMPIRIC), 0.0F), 0.0001F);
+    }
 }
