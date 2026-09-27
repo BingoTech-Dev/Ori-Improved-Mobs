@@ -40,7 +40,7 @@ JDK 17 的实际目录名可在 `C:\Program Files\Eclipse Adoptium\`（bash 下�
 | 启动客户端 | `./gradlew.bat runClient` | 仅当需要运行时验证；会真正打开游戏进程 |
 
 - `gradle.properties` 设置了 `org.gradle.daemon=false`，每次调用都会 fork 一次性守护进程，构建偏慢属正常，不要为了"提速"改动它。
-- 产物：`build/libs/ori_improved_mobs-0.2.0.jar`（`jar` 任务自动接 `reobfJar` 重混淆）。
+- 产物：`build/libs/ori_improved_mobs-<mod_version>.jar`（当前 0.2.0；`jar` 任务自动接 `reobfJar` 重混淆）。
 - 不要升级 Gradle / Forge / Java 目标版本，除非用户明确要求——ForgeGradle 对版本组合很敏感。
 - 编译通过 ≠ 运行时正确。涉及 Forge 事件/世界交互的改动，单元测试不能证明事件边界行为；需要运行时验证时用 `runClient` / `runServer`，并在交付说明中如实写明是否真的做过运行时验证。
 
@@ -92,7 +92,7 @@ src/main/java/com/oriimprovedmobs/
 
 - JUnit 5（`org.junit.jupiter:junit-jupiter:5.10.2`；`tasks.named('test')` 已启用 `useJUnitPlatform()`）。
 - 测试目录镜像主代码包结构：`src/test/java/com/oriimprovedmobs/...`。测试可以引用 Minecraft 的 NBT 类（在测试类路径上），但不要构造世界/实体。
-- 命名约定：驼峰描述句（如 `rejectsRollAtTheSpawnChanceBoundary`），断言边界值（roll == chance 不算精英；恰好半血不加成；冷却正好到期才可用）。
+- 命名约定：驼峰描述句（如 `rejectsRollAtTheSpawnChanceBoundary`），断言边界值（roll == chance 不算精英；恰好半血不加成伤害、隐身词缀仍隐身；冷却正好到期才可用）。
 - `BuildEnvironmentTest` 守护测试运行时必须是 Java 17。
 - 行为变更走 RED → GREEN：
   1. 先写会失败的测试（提交信息 `test:`）；
@@ -102,16 +102,16 @@ src/main/java/com/oriimprovedmobs/
 
 ## 新增精英词缀清单
 
-按破障者（BREACHER）的既有提交链：
+按既有词缀（破障者 / 隐身 / 吸血 / 开拓者）的提交链：
 
 1. `EliteType` 加枚举项 + id；
 2. `EliteConfigDefaults` 加默认值（ForgeConfigSpec 的默认值在单测里通过 `getDefault()` 断言）；
 3. `EliteConfig` 定义开关，并把参数加进 `enabledTypes(...)`（补测试）；
 4. 环境条件加进 `EliteTypeResolver`（若该词缀有环境限制）；
 5. 行为规则以纯函数加进对应 `*Rules` 类 + 边界测试；
-6. 在 `events/` 对应处理器接线（生成 / 入世界 / 战斗 / Goal）；
+6. 在 `events/` 对应处理器接线（生成 / 入世界 / 战斗 / Goal）；新增处理器要在 `OriImprovedMobs.java` 里**同时**加显式 import 和 `MinecraftForge.EVENT_BUS.register(...)`（漏 import 会在接线后直接编译失败）；
 7. `assets/ori_improved_mobs/lang/en_us.json` 与 `zh_cn.json` 都加 `entity.ori_improved_mobs.elite.<id>`；
-8. 更新 `README.md` 的词缀表与配置示例。
+8. 更新 `README.md` 的词缀表与配置示例，并同步本文件的测试基线数字与架构树。
 
 ## 代码风格
 
@@ -124,3 +124,4 @@ src/main/java/com/oriimprovedmobs/
 
 - `build/`、`run/`、`logs/`、`.gradle/` 是生成物，已在 `.gitignore`；不要提交 `run/` 下的存档与日志。
 - 除非用户明确要求，不要 commit、push 或改写历史。
+- 提交前先确认构建真的成功：不要把 `git commit` 和 gradle 串在同一条 shell 命令里（管道/串联会掩盖 `BUILD FAILED`），先单独跑并读到 `BUILD SUCCESSFUL` 再提交；若坏提交已产生，修好后用 `git reset --soft HEAD~1` 重做。
