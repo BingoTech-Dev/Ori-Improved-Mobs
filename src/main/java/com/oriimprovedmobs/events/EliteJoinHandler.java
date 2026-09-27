@@ -28,7 +28,6 @@ public final class EliteJoinHandler {
             return;
         }
 
-        mob.setGlowingTag(true);
         mob.setCustomNameVisible(false);
 
         CompoundTag persistentData = mob.getPersistentData();
@@ -36,6 +35,8 @@ public final class EliteJoinHandler {
             mob.setCustomName(ElitePresentation.name(mob.getDisplayName(), types));
             persistentData.putBoolean(NAME_APPLIED_KEY, true);
         }
+
+        EliteConcealmentHandler.refresh(mob, types, mob.getHealth());
 
         if (types.contains(EliteType.NIGHT_STALKER)) {
             addEffectIfMissing(mob, MobEffects.MOVEMENT_SPEED);
