@@ -1,6 +1,7 @@
 package com.oriimprovedmobs.events;
 
 import com.oriimprovedmobs.elite.EliteBlockBreakingRules;
+import com.oriimprovedmobs.elite.EliteClimbingRules;
 import com.oriimprovedmobs.elite.EliteData;
 import com.oriimprovedmobs.elite.ElitePresentation;
 import com.oriimprovedmobs.elite.EliteType;
@@ -50,6 +51,13 @@ public final class EliteJoinHandler {
         if (EliteBlockBreakingRules.shouldInstallGoal(
                 types.contains(EliteType.BREACHER), blockBreakingGoalInstalled)) {
             mob.goalSelector.addGoal(1, new EliteBlockBreakingGoal(mob));
+        }
+
+        boolean climbingGoalInstalled = mob.goalSelector.getAvailableGoals().stream()
+                .anyMatch(wrappedGoal -> wrappedGoal.getGoal() instanceof EliteClimbingGoal);
+        if (EliteClimbingRules.shouldInstallGoal(
+                types.contains(EliteType.PATHFINDER), climbingGoalInstalled)) {
+            mob.goalSelector.addGoal(2, new EliteClimbingGoal(mob));
         }
     }
 
