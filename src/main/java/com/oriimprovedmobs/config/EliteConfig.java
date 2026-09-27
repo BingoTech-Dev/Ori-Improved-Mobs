@@ -12,6 +12,9 @@ public final class EliteConfig {
     public static final ForgeConfigSpec.BooleanValue FROSTBORN_ENABLED;
     public static final ForgeConfigSpec.BooleanValue INFERNAL_ENABLED;
     public static final ForgeConfigSpec.BooleanValue BREACHER_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue SHROUDED_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue VAMPIRIC_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue PATHFINDER_ENABLED;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -23,6 +26,9 @@ public final class EliteConfig {
         FROSTBORN_ENABLED = builder.define("frostbornEnabled", EliteConfigDefaults.FROSTBORN_ENABLED);
         INFERNAL_ENABLED = builder.define("infernalEnabled", EliteConfigDefaults.INFERNAL_ENABLED);
         BREACHER_ENABLED = builder.define("breacherEnabled", EliteConfigDefaults.BREACHER_ENABLED);
+        SHROUDED_ENABLED = builder.define("shroudedEnabled", EliteConfigDefaults.SHROUDED_ENABLED);
+        VAMPIRIC_ENABLED = builder.define("vampiricEnabled", EliteConfigDefaults.VAMPIRIC_ENABLED);
+        PATHFINDER_ENABLED = builder.define("pathfinderEnabled", EliteConfigDefaults.PATHFINDER_ENABLED);
         builder.pop();
         SPEC = builder.build();
     }
@@ -34,14 +40,20 @@ public final class EliteConfig {
                 NIGHT_STALKER_ENABLED.get(),
                 FROSTBORN_ENABLED.get(),
                 INFERNAL_ENABLED.get(),
-                BREACHER_ENABLED.get());
+                BREACHER_ENABLED.get(),
+                SHROUDED_ENABLED.get(),
+                VAMPIRIC_ENABLED.get(),
+                PATHFINDER_ENABLED.get());
     }
 
     static EnumSet<EliteType> enabledTypes(
             boolean nightStalkerEnabled,
             boolean frostbornEnabled,
             boolean infernalEnabled,
-            boolean breacherEnabled) {
+            boolean breacherEnabled,
+            boolean shroudedEnabled,
+            boolean vampiricEnabled,
+            boolean pathfinderEnabled) {
         EnumSet<EliteType> enabled = EnumSet.noneOf(EliteType.class);
         if (nightStalkerEnabled) {
             enabled.add(EliteType.NIGHT_STALKER);
@@ -54,6 +66,15 @@ public final class EliteConfig {
         }
         if (breacherEnabled) {
             enabled.add(EliteType.BREACHER);
+        }
+        if (shroudedEnabled) {
+            enabled.add(EliteType.SHROUDED);
+        }
+        if (vampiricEnabled) {
+            enabled.add(EliteType.VAMPIRIC);
+        }
+        if (pathfinderEnabled) {
+            enabled.add(EliteType.PATHFINDER);
         }
         return enabled;
     }

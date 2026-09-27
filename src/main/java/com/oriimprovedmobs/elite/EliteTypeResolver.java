@@ -11,6 +11,9 @@ public final class EliteTypeResolver {
         if (context.overworld() && context.night() && enabled.contains(EliteType.NIGHT_STALKER)) {
             result.add(EliteType.NIGHT_STALKER);
         }
+        if (context.overworld() && context.night() && enabled.contains(EliteType.SHROUDED)) {
+            result.add(EliteType.SHROUDED);
+        }
         if (context.snowyBiome() && enabled.contains(EliteType.FROSTBORN)) {
             result.add(EliteType.FROSTBORN);
         }
@@ -19,6 +22,12 @@ public final class EliteTypeResolver {
         }
         if (enabled.contains(EliteType.BREACHER)) {
             result.add(EliteType.BREACHER);
+        }
+        if (enabled.contains(EliteType.VAMPIRIC)) {
+            result.add(EliteType.VAMPIRIC);
+        }
+        if (enabled.contains(EliteType.PATHFINDER)) {
+            result.add(EliteType.PATHFINDER);
         }
         return result;
     }

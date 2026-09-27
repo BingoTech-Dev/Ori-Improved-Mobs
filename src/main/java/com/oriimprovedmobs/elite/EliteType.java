@@ -7,7 +7,10 @@ public enum EliteType {
     NIGHT_STALKER("night_stalker"),
     FROSTBORN("frostborn"),
     INFERNAL("infernal"),
-    BREACHER("breacher");
+    BREACHER("breacher"),
+    SHROUDED("shrouded"),
+    VAMPIRIC("vampiric"),
+    PATHFINDER("pathfinder");
 
     private final String id;
 
