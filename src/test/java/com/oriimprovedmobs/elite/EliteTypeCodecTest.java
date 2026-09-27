@@ -40,4 +40,11 @@ class EliteTypeCodecTest {
 
         assertEquals(EnumSet.of(EliteType.INFERNAL), EliteTypeCodec.read(tag));
     }
+
+    @Test
+    void storesNewAffixIdsUsingStableIds() {
+        assertEquals("shrouded", EliteType.SHROUDED.id());
+        assertEquals("vampiric", EliteType.VAMPIRIC.id());
+        assertEquals("pathfinder", EliteType.PATHFINDER.id());
+    }
 }

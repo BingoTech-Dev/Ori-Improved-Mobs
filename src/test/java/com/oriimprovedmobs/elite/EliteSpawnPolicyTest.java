@@ -22,7 +22,8 @@ class EliteSpawnPolicyTest {
                 () -> 0.049D,
                 0.05D);
 
-        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.BREACHER), result);
+        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.SHROUDED, EliteType.VAMPIRIC,
+                EliteType.PATHFINDER, EliteType.BREACHER), result);
     }
 
     @Test
@@ -78,7 +79,8 @@ class EliteSpawnPolicyTest {
                 },
                 0.05D);
 
-        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN, EliteType.BREACHER), result);
+        assertEquals(EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN, EliteType.SHROUDED,
+                EliteType.VAMPIRIC, EliteType.PATHFINDER, EliteType.BREACHER), result);
         assertEquals(1, rolls.get());
     }
 

@@ -27,4 +27,14 @@ class ElitePresentationTest {
         assertEquals(List.of("entity.ori_improved_mobs.elite.breacher"),
                 ElitePresentation.labelKeys(Set.of(EliteType.BREACHER)));
     }
+
+    @Test
+    void exposesNewAffixLabelKeys() {
+        assertEquals(List.of(
+                "entity.ori_improved_mobs.elite.shrouded",
+                "entity.ori_improved_mobs.elite.vampiric",
+                "entity.ori_improved_mobs.elite.pathfinder"),
+                ElitePresentation.labelKeys(Set.of(
+                        EliteType.SHROUDED, EliteType.VAMPIRIC, EliteType.PATHFINDER)));
+    }
 }

@@ -61,6 +61,31 @@ class EliteTypeResolverTest {
                 EliteTypeResolver.resolve(context, legacyTypes()));
     }
 
+    @Test
+    void resolvesShroudedOnlyAtOverworldNight() {
+        var enabled = EnumSet.of(EliteType.SHROUDED);
+
+        assertEquals(EnumSet.of(EliteType.SHROUDED), EliteTypeResolver.resolve(
+                new EliteSpawnContext(true, false, false, true), enabled));
+        assertEquals(EnumSet.noneOf(EliteType.class), EliteTypeResolver.resolve(
+                new EliteSpawnContext(true, false, false, false), enabled));
+        assertEquals(EnumSet.noneOf(EliteType.class), EliteTypeResolver.resolve(
+                new EliteSpawnContext(false, true, false, true), enabled));
+    }
+
+    @Test
+    void resolvesVampiricAndPathfinderInEveryDimension() {
+        var enabled = EnumSet.of(EliteType.VAMPIRIC, EliteType.PATHFINDER);
+        var expected = EnumSet.of(EliteType.VAMPIRIC, EliteType.PATHFINDER);
+
+        assertEquals(expected, EliteTypeResolver.resolve(
+                new EliteSpawnContext(true, false, false, false), enabled));
+        assertEquals(expected, EliteTypeResolver.resolve(
+                new EliteSpawnContext(false, true, false, false), enabled));
+        assertEquals(expected, EliteTypeResolver.resolve(
+                new EliteSpawnContext(false, false, false, false), enabled));
+    }
+
     private static EnumSet<EliteType> legacyTypes() {
         return EnumSet.of(EliteType.NIGHT_STALKER, EliteType.FROSTBORN, EliteType.INFERNAL);
     }
